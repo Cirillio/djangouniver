@@ -1,0 +1,128 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+  Журнал оценок
+{% endblock %}
+
+{% block content %}
+  <div class="p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-neutral-800">Журнал оценок</h1>
+      <form method="GET" class="flex gap-3">
+        <select name="subject" class="px-3 py-2 border border-neutral-300 rounded-md text-sm" >
+          <option value="">Выберите предмет</option>
+          {% for subject in subjects %}
+            <option value="{{ subject.id }}" {% if selected_subject and selected_subject.id == subject.id %} selected {% endif %}>
+              {{ subject.name }}
+            </option>
+          {% endfor %}
+        </select>
+        <select name="group" class="px-3 py-2 border border-neutral-300 rounded-md text-sm">
+          <option value="">Выберите группу</option>
+          {% for group in groups %}
+            <option value="{{ group.id }}" {% if selected_group and selected_group.id == group.id %}selected{% endif %}>
+              {{ group.name }}
+            </option>
+          {% endfor %}
+        </select>
+                <button class="px-3 py-1 bg-neutral-300 hover:bg-neutral-300/50 cursor-pointer rounded-md transition-all" type="submit">
+            ОК
+        </button>
+        {% if selected_subject and selected_group %}
+          <button type="button" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
+            Добавить оценку
+          </button>
+        {% endif %}
+
+
+      </form>
+    </div>
+
+    {% if error %}
+      <div class="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+        <p class="text-red-700">{{ error }}</p>
+      </div>
+    {% endif %}
+
+    {% if selected_subject and selected_group %}
+      <div class="bg-white rounded-md overflow-hidden shadow-sm">
+        <div class="p-4 bg-neutral-50 border-b border-neutral-200">
+          <h3 class="text-lg font-semibold text-neutral-700">{{ selected_subject.name }} - Группа {{ selected_group.name }}</h3>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full table-auto">
+            <thead class="bg-neutral-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-neutral-700">Студент</th>
+                <th class="px-6 py-3 text-center text-sm font-medium text-neutral-700">Оценка</th>
+                <th class="px-6 py-3 text-center text-sm font-medium text-neutral-700">Дата</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-neutral-700">Действия</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-neutral-200">
+              {% for student in students %}
+                <tr class="hover:bg-neutral-50 transition-colors">
+                  <td class="px-6 py-4 text-sm font-medium text-neutral-800">
+                    {{ student.last_name }} {{ student.name }}
+                    {% if student.mid_name %}{{ student.mid_name }}{% endif %}
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <span class="text-neutral-400">Нет оценки</span>
+                  </td>
+                  <td class="px-6 py-4 text-center text-sm text-neutral-600">-</td>
+                  <td class="px-6 py-4 text-sm">
+                    <button class="text-green-600 hover:text-green-800">Добавить</button>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="4" class="px-6 py-8 text-center text-neutral-500">
+                    В выбранной группе нет студентов
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-between items-center">
+        <div class="text-sm text-neutral-600">
+          Показано {{ students.count }} студентов из группы {{ selected_group.name }}
+        </div>
+        <div class="flex space-x-4 text-sm">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+            <span>5 (Отлично)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
+            <span>4 (Хорошо)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 bg-orange-500 rounded-full"></span>
+            <span>3 (Удовл.)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+            <span>2 (Неудовл.)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+            <span>Зачтено</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 bg-gray-500 rounded-full"></span>
+            <span>Не зачтено</span>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="bg-neutral-50 border-2 border-dashed border-neutral-300 rounded-md p-8 text-center">
+        <h3 class="text-lg font-medium text-neutral-700 mb-2">Выберите предмет и группу</h3>
+        <p class="text-neutral-500">Чтобы просмотреть журнал оценок, выберите предмет и группу из выпадающих списков выше</p>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

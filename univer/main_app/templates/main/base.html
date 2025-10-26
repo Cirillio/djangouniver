@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>
+      {% block title %}
+
+      {% endblock %}
+    </title>
+  </head>
+  <body>
+    <div class="h-dvh w-full flex bg-neutral-50 flex-col">
+      <header class="flex items-center shadow-sm w-full px-20 py-4 bg-neutral-100">
+        <a href="{% url 'home' %}" class="text-xl rounded-md px-3 py-1 text-neutral-700 font-bold cursor-pointer bg-neutral-200 hover:bg-neutral-200/75 transition-all">University</a>
+
+        <nav class="ml-auto">
+          <ul class="flex gap-4">
+            <li>
+              <a href="{% url 'students' %}" class="rounded-md px-3 py-1 text-neutral-800 cursor-pointer bg-neutral-200 hover:bg-neutral-200/75 transition-all">Список студентов</a>
+            </li>
+            <li>
+              <a href="{% url 'journal' %}" class="rounded-md px-3 py-1 text-neutral-800 cursor-pointer bg-neutral-200 hover:bg-neutral-200/75 transition-all">Журнал оценок</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <main class="px-20 py-3 h-full">
+        <div class="w-full h-full rounded-md bg-neutral-100 shadow-sm">
+          {% block content %}
+
+          {% endblock %}
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
